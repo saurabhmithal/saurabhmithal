@@ -1,0 +1,6 @@
+title: Your Name
+description: Your site description
+baseurl: ""
+url: "https://yourusername.github.io"
+markdown: kramdown
+theme: minima
