@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Georgia, serif;
+            font-size: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fafafa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .header .subtitle {
+            color: #666;
+            font-size: 13px;
+        }
+        .header .date {
+            color: #888;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        /* View Tabs (Daily/Weekly/Weekend) */
+        .view-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        .view-tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: transparent;
+            color: #888;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .view-tab:hover { color: #555; }
+        .view-tab.active {
+            color: #333;
+            border-bottom-color: #333;
+        }
+
+        /* Content Panels */
+        .view-content { display: none; }
+        .view-content.active { display: block; }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .card-header {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Scores */
+        .scores-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .score-item {
+            text-align: center;
+            padding: 12px;
+            background: #f8f8f8;
+            border-radius: 6px;
+        }
+        .score-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        .score-item .value {
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .score-item .value.high { color: #2d5a3d; }
+        .score-item .value.medium { color: #b45309; }
+        .score-item .value.low { color: #c62828; }
+
+        /* Priorities */
+        .priorities-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .priority-column h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        .priority-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .priority-item:last-child { border-bottom: none; }
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Stressors */
+        .stressor {
+            padding: 12px;
+            background: #fef2f2;
+            border-left: 3px solid #c62828;
+            margin-bottom: 10px;
+            border-radius: 0 4px 4px 0;
+        }
+        .stressor .name {
+            font-weight: 600;
+            color: #991b1b;
+            margin-bottom: 4px;
+        }
+        .stressor .note {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Snapshot */
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .snapshot-item {
+            padding: 12px;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+        .snapshot-item .area {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .snapshot-item .status {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Area Tabs */
+        .area-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .area-tab {
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            background: #f0f0f0;
+            color: #666;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .area-tab:hover { background: #e5e5e5; }
+        .area-tab.active {
+            background: #333;
+            color: #fff;
+        }
+        .area-content { display: none; }
+        .area-content.active { display: block; }
+
+        /* Sub-area items */
+        .sub-area {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        .sub-area:last-child { border-bottom: none; }
+        .sub-area-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .sub-area-name {
+            font-weight: 600;
+        }
+        .status-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .status-badge.good { background: #d1fae5; color: #065f46; }
+        .status-badge.attention { background: #fef3c7; color: #92400e; }
+        .status-badge.stressor { background: #fee2e2; color: #991b1b; }
+        .status-badge.neutral { background: #f3f4f6; color: #6b7280; }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .comparison-column h5 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        .comparison-column .text {
+            font-size: 14px;
+            color: #555;
+        }
+        .comparison-column.last-week .text {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Finance */
+        .finance-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .finance-table th {
+            text-align: left;
+            padding: 10px 8px;
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #ddd;
+        }
+        .finance-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .finance-table .amount {
+            text-align: right;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        .finance-table .negative { color: #c62828; }
+        .finance-table .highlight { font-weight: 600; }
+
+        /* Lists */
+        .simple-list {
+            list-style: none;
+        }
+        .simple-list li {
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .simple-list li:last-child { border-bottom: none; }
+
+        /* Daily View specific */
+        .today-focus {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .today-focus h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        .today-focus .date-display {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .today-focus .priorities {
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* Weekend View */
+        .reflection-prompt {
+            background: #f0f9ff;
+            border-left: 3px solid #0284c7;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 0 6px 6px 0;
+        }
+        .reflection-prompt h4 {
+            color: #0369a1;
+            margin-bottom: 8px;
+        }
+
+        /* Insights */
+        .trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .trend.up { background: #d1fae5; color: #065f46; }
+        .trend.down { background: #fee2e2; color: #991b1b; }
+        .trend.same { background: #f3f4f6; color: #6b7280; }
+
+        /* Print styles */
+        @media print {
+            body { background: white; }
+            .view-tabs { display: none; }
+            .card { break-inside: avoid; }
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .scores-grid { grid-template-columns: repeat(2, 1fr); }
+            .priorities-grid { grid-template-columns: 1fr; }
+            .comparison { grid-template-columns: 1fr; }
+            .snapshot-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Life Dashboard</h1>
+        <div class="subtitle" id="subtitle">Loading...</div>
+        <div class="date" id="lastUpdated"></div>
+    </div>
+
+    <!-- View Tabs -->
+    <div class="view-tabs">
+        <button class="view-tab active" onclick="showView('daily')">Daily</button>
+        <button class="view-tab" onclick="showView('weekly')">Weekly</button>
+        <button class="view-tab" onclick="showView('weekend')">Weekend</button>
+        <button class="view-tab" onclick="showView('insights')">Insights</button>
+    </div>
+
+    <!-- DAILY VIEW -->
+    <div id="daily" class="view-content active">
+        <div class="today-focus">
+            <h2>Today's Focus</h2>
+            <div class="date-display" id="todayDate"></div>
+            <div class="priorities" id="todayPriorities"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Current Scores</div>
+            <div class="scores-grid" id="dailyScores"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Active Stressors</div>
+            <div id="dailyStressors"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Quick Status</div>
+            <div id="dailySnapshot"></div>
+        </div>
+    </div>
+
+    <!-- WEEKLY VIEW -->
+    <div id="weekly" class="view-content">
+        <div class="card">
+            <div class="card-header">This Week vs Last Week</div>
+            <div class="scores-grid" id="weeklyScores"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Priorities</div>
+            <div class="priorities-grid" id="weeklyPriorities"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Stressors</div>
+            <div id="weeklyStressors"></div>
+        </div>
+
+        <!-- Area Tabs -->
+        <div class="card">
+            <div class="area-tabs">
+                <button class="area-tab active" onclick="showArea('health')">Health</button>
+                <button class="area-tab" onclick="showArea('work')">Work</button>
+                <button class="area-tab" onclick="showArea('social')">Social</button>
+                <button class="area-tab" onclick="showArea('chores')">Chores</button>
+                <button class="area-tab" onclick="showArea('upcoming')">Upcoming</button>
+                <button class="area-tab" onclick="showArea('finances')">Finances</button>
+            </div>
+
+            <div id="health" class="area-content active"></div>
+            <div id="work" class="area-content"></div>
+            <div id="social" class="area-content"></div>
+            <div id="chores" class="area-content"></div>
+            <div id="upcoming" class="area-content"></div>
+            <div id="finances" class="area-content"></div>
+        </div>
+    </div>
+
+    <!-- WEEKEND VIEW -->
+    <div id="weekend" class="view-content">
+        <div class="reflection-prompt">
+            <h4>Weekend Reflection</h4>
+            <p>How did this week go? What worked? What needs adjustment?</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Week Summary</div>
+            <div class="scores-grid" id="weekendScores"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">What's Coming Up</div>
+            <div id="weekendUpcoming"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Next Week Planning</div>
+            <div id="weekendNextWeek"></div>
+        </div>
+
+        <div class="reflection-prompt">
+            <h4>Questions to Consider</h4>
+            <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>What's the one thing that would make next week great?</li>
+                <li>What stressor can I reduce or eliminate?</li>
+                <li>Who do I want to connect with?</li>
+                <li>What does my body need?</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- INSIGHTS VIEW -->
+    <div id="insights" class="view-content">
+        <div class="card">
+            <div class="card-header">Score Trends</div>
+            <div id="insightsTrends"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Review History</div>
+            <table class="finance-table" id="insightsHistory"></table>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Financial Trend</div>
+            <table class="finance-table" id="insightsFinance"></table>
+        </div>
+    </div>
+
+    <script>
+        let data = null;
+
+        // Load data on page load
+        async function loadData() {
+            try {
+                const response = await fetch('data/current.json');
+                data = await response.json();
+                renderAll();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: #c62828;">Error loading dashboard data. Make sure data/current.json exists.</div>';
+            }
+        }
+
+        function renderAll() {
+            // Header
+            document.getElementById('subtitle').textContent = `Comparing to ${data.meta.lastReviewDate} ("${data.meta.lastReviewNote}")`;
+            document.getElementById('lastUpdated').textContent = `Last updated: ${data.meta.reviewDate}`;
+
+            // Today's date
+            const today = new Date();
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            document.getElementById('todayDate').textContent = today.toLocaleDateString('en-US', options);
+
+            renderDailyView();
+            renderWeeklyView();
+            renderWeekendView();
+            renderInsightsView();
+        }
+
+        function renderDailyView() {
+            // Today's priorities
+            const priorities = data.thisWeek.priorities.slice(0, 3);
+            document.getElementById('todayPriorities').innerHTML = priorities.map(p => `→ ${p}`).join('<br>');
+
+            // Scores
+            renderScores('dailyScores', data.scores);
+
+            // Stressors
+            document.getElementById('dailyStressors').innerHTML = data.stressors.map(s => `
+                <div class="stressor">
+                    <div class="name">${s.name}</div>
+                    <div class="note">${s.note}</div>
+                </div>
+            `).join('');
+
+            // Quick status snapshot
+            const snapshot = [
+                { area: 'Health', status: getQuickStatus('health') },
+                { area: 'Work', status: getQuickStatus('work') },
+                { area: 'Finances', status: `Net worth: ₹${data.finances.stock[0].netWorth.toLocaleString()}` },
+                { area: 'Upcoming', status: getUpcomingQuick() }
+            ];
+            document.getElementById('dailySnapshot').innerHTML = `
+                <div class="snapshot-grid">
+                    ${snapshot.map(s => `
+                        <div class="snapshot-item">
+                            <div class="area">${s.area}</div>
+                            <div class="status">${s.status}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderWeeklyView() {
+            // Scores with comparison
+            renderScores('weeklyScores', data.scores, true);
+
+            // Priorities
+            document.getElementById('weeklyPriorities').innerHTML = `
+                <div class="priority-column">
+                    <h4>This Week</h4>
+                    ${data.thisWeek.priorities.map(p => `
+                        <div class="priority-item">
+                            <div class="checkbox"></div>
+                            <span>${p}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="priority-column">
+                    <h4>Next Week</h4>
+                    ${data.thisWeek.nextWeek.map(p => `
+                        <div class="priority-item">
+                            <div class="checkbox"></div>
+                            <span>${p}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Stressors
+            document.getElementById('weeklyStressors').innerHTML = data.stressors.map(s => `
+                <div class="stressor">
+                    <div class="name">${s.name}</div>
+                    <div class="note">${s.note}</div>
+                </div>
+            `).join('');
+
+            // Render area content
+            renderHealthArea();
+            renderWorkArea();
+            renderSocialArea();
+            renderChoresArea();
+            renderUpcomingArea();
+            renderFinancesArea();
+        }
+
+        function renderWeekendView() {
+            renderScores('weekendScores', data.scores, true);
+
+            // Upcoming
+            const upcoming = data.upcoming;
+            document.getElementById('weekendUpcoming').innerHTML = `
+                <div class="snapshot-grid">
+                    ${Object.entries(upcoming).map(([key, item]) => `
+                        <div class="snapshot-item">
+                            <div class="area">${formatKey(key)}${item.date ? ` (${formatDate(item.date)})` : ''}</div>
+                            <div class="status">${item.current}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Next week
+            document.getElementById('weekendNextWeek').innerHTML = `
+                <ul class="simple-list">
+                    ${data.thisWeek.nextWeek.map(p => `<li>→ ${p}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        function renderInsightsView() {
+            // Trends
+            const history = data.reviewHistory;
+            if (history.length >= 2) {
+                const latest = history[0];
+                const previous = history[1];
+
+                document.getElementById('insightsTrends').innerHTML = `
+                    <div class="scores-grid">
+                        ${['health', 'work', 'social', 'chores'].map(area => {
+                            const diff = latest[area] - previous[area];
+                            const trendClass = diff > 0 ? 'up' : diff < 0 ? 'down' : 'same';
+                            const arrow = diff > 0 ? '↑' : diff < 0 ? '↓' : '→';
+                            return `
+                                <div class="score-item">
+                                    <div class="label">${area}</div>
+                                    <div class="value ${getScoreClass(latest[area])}">${latest[area]}</div>
+                                    <div class="trend ${trendClass}">${arrow} ${Math.abs(diff)} from last</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            // History table
+            document.getElementById('insightsHistory').innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Health</th>
+                        <th>Work</th>
+                        <th>Social</th>
+                        <th>Chores</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${history.map(h => `
+                        <tr>
+                            <td>${h.date}</td>
+                            <td>${h.health}</td>
+                            <td>${h.work}</td>
+                            <td>${h.social}</td>
+                            <td>${h.chores}</td>
+                            <td>${h.notes}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+
+            // Finance table
+            document.getElementById('insightsFinance').innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th style="text-align: right">Net Worth</th>
+                        <th style="text-align: right">Cash</th>
+                        <th style="text-align: right">Credit Card</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.finances.stock.map(f => `
+                        <tr>
+                            <td>${f.date}</td>
+                            <td class="amount highlight">₹${f.netWorth.toLocaleString()}</td>
+                            <td class="amount">₹${f.totalCash.toLocaleString()}</td>
+                            <td class="amount negative">₹${f.creditCard.toLocaleString()}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        function renderHealthArea() {
+            const physical = data.health.physical;
+            const emotional = data.health.emotional;
+
+            document.getElementById('health').innerHTML = `
+                <h4 style="margin-bottom: 12px; color: #666;">Physical</h4>
+                ${Object.entries(physical).map(([key, item]) => renderSubArea(key, item)).join('')}
+
+                <h4 style="margin: 24px 0 12px; color: #666;">Emotional</h4>
+                ${Object.entries(emotional).map(([key, item]) => renderSubArea(key, item)).join('')}
+            `;
+        }
+
+        function renderWorkArea() {
+            document.getElementById('work').innerHTML = Object.entries(data.work)
+                .map(([key, item]) => renderSubArea(key, item)).join('');
+        }
+
+        function renderSocialArea() {
+            document.getElementById('social').innerHTML = Object.entries(data.social)
+                .map(([key, item]) => renderSubArea(key, item)).join('');
+        }
+
+        function renderChoresArea() {
+            const chores = data.chores;
+            document.getElementById('chores').innerHTML = `
+                <h4 style="margin-bottom: 12px; color: #666;">Purchases</h4>
+                ${Object.entries(chores.purchases).map(([key, item]) => `
+                    <div class="sub-area">
+                        <div class="sub-area-header">
+                            <span class="sub-area-name">${formatKey(key)}</span>
+                            ${item.status ? `<span class="status-badge ${item.status}">${item.status}</span>` : ''}
+                        </div>
+                        <div class="text">${item.current}</div>
+                    </div>
+                `).join('')}
+
+                <h4 style="margin: 24px 0 12px; color: #666;">Shifting</h4>
+                <div class="sub-area">
+                    <div class="text">${chores.shifting.current}</div>
+                </div>
+
+                <h4 style="margin: 24px 0 12px; color: #666;">Recurring</h4>
+                ${Object.entries(chores.recurring).map(([key, item]) => `
+                    <div class="sub-area">
+                        <div class="sub-area-name">${formatKey(key)}</div>
+                        <div class="text">${item.current}</div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function renderUpcomingArea() {
+            document.getElementById('upcoming').innerHTML = Object.entries(data.upcoming)
+                .map(([key, item]) => `
+                    <div class="sub-area">
+                        <div class="sub-area-header">
+                            <span class="sub-area-name">${formatKey(key)}</span>
+                            ${item.date ? `<span style="color: #888; font-size: 12px;">${formatDate(item.date)}</span>` : ''}
+                        </div>
+                        <div class="comparison">
+                            <div class="comparison-column">
+                                <h5>Current</h5>
+                                <div class="text">${item.current}</div>
+                            </div>
+                            <div class="comparison-column last-week">
+                                <h5>Last Week</h5>
+                                <div class="text">${item.lastWeek}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function renderFinancesArea() {
+            const fin = data.finances;
+            document.getElementById('finances').innerHTML = `
+                <h4 style="margin-bottom: 12px; color: #666;">Stock (Where We Are)</h4>
+                <table class="finance-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th style="text-align: right">Net Worth</th>
+                            <th style="text-align: right">Cash</th>
+                            <th style="text-align: right">Credit Card</th>
+                            <th style="text-align: right">Savings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${fin.stock.map(s => `
+                            <tr>
+                                <td>${s.date}</td>
+                                <td class="amount highlight">₹${s.netWorth.toLocaleString()}</td>
+                                <td class="amount">₹${s.totalCash.toLocaleString()}</td>
+                                <td class="amount negative">₹${s.creditCard.toLocaleString()}</td>
+                                <td class="amount">₹${s.savings.toLocaleString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <h4 style="margin: 24px 0 12px; color: #666;">Flow (Monthly)</h4>
+                <div class="snapshot-grid">
+                    <div class="snapshot-item">
+                        <div class="area">Income</div>
+                        <div class="status">${fin.flow.income}</div>
+                    </div>
+                    <div class="snapshot-item">
+                        <div class="area">Fixed Expenses</div>
+                        <div class="status">${fin.flow.fixedExpenses}</div>
+                    </div>
+                </div>
+
+                <h4 style="margin: 24px 0 12px; color: #666;">Purchases</h4>
+                <div class="snapshot-grid">
+                    <div class="snapshot-item">
+                        <div class="area">Next</div>
+                        <ul class="simple-list">
+                            ${fin.purchasesNext.map(p => `<li>${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="snapshot-item">
+                        <div class="area">Holding</div>
+                        <ul class="simple-list">
+                            ${fin.purchasesHolding.map(p => `<li>${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 style="margin: 24px 0 12px; color: #666;">Big Changes (When Income Flows)</h4>
+                <div class="text" style="color: #555;">
+                    ${fin.bigChanges.join(' · ')}
+                </div>
+            `;
+        }
+
+        function renderSubArea(key, item) {
+            return `
+                <div class="sub-area">
+                    <div class="sub-area-header">
+                        <span class="sub-area-name">${formatKey(key)}</span>
+                        <span class="status-badge ${item.status || 'neutral'}">${item.status || 'neutral'}</span>
+                    </div>
+                    <div class="comparison">
+                        <div class="comparison-column">
+                            <h5>This Week</h5>
+                            <div class="text">${item.current}</div>
+                        </div>
+                        <div class="comparison-column last-week">
+                            <h5>Last Week</h5>
+                            <div class="text">${item.lastWeek}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderScores(elementId, scores, showTrend = false) {
+            const history = data.reviewHistory;
+            const previous = history.length > 1 ? history[1] : null;
+
+            document.getElementById(elementId).innerHTML = Object.entries(scores).map(([key, value]) => {
+                let trendHtml = '';
+                if (showTrend && previous) {
+                    const diff = value - previous[key];
+                    if (diff !== 0) {
+                        const trendClass = diff > 0 ? 'up' : 'down';
+                        const arrow = diff > 0 ? '↑' : '↓';
+                        trendHtml = `<div class="trend ${trendClass}">${arrow}${Math.abs(diff)}</div>`;
+                    }
+                }
+                return `
+                    <div class="score-item">
+                        <div class="label">${key}</div>
+                        <div class="value ${getScoreClass(value)}">${value}</div>
+                        ${trendHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Helper functions
+        function getScoreClass(score) {
+            if (score >= 7) return 'high';
+            if (score >= 5) return 'medium';
+            return 'low';
+        }
+
+        function formatKey(key) {
+            return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function getQuickStatus(area) {
+            if (area === 'health') {
+                const gym = data.health.physical.gym.status;
+                const food = data.health.physical.food.status;
+                return `Gym: ${gym}, Food: ${food}`;
+            }
+            if (area === 'work') {
+                return data.work.purple.current.split('.')[0];
+            }
+            return '';
+        }
+
+        function getUpcomingQuick() {
+            const birthday = data.upcoming.birthday;
+            if (birthday && birthday.date) {
+                const days = Math.ceil((new Date(birthday.date) - new Date()) / (1000 * 60 * 60 * 24));
+                if (days > 0 && days <= 14) return `Birthday in ${days} days`;
+            }
+            return 'Check upcoming tab';
+        }
+
+        // View switching
+        function showView(viewId) {
+            document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.view-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[onclick="showView('${viewId}')"]`).classList.add('active');
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        // Area switching
+        function showArea(areaId) {
+            document.querySelectorAll('.area-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.area-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[onclick="showArea('${areaId}')"]`).classList.add('active');
+            document.getElementById(areaId).classList.add('active');
+        }
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
