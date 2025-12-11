@@ -1,0 +1,296 @@
+{
+  "meta": {
+    "reviewDate": "2025-12-11",
+    "lastReviewDate": "2025-11-28",
+    "lastReviewNote": "Running on fumes"
+  },
+
+  "scores": {
+    "health": 7,
+    "work": 6,
+    "social": 5,
+    "chores": 5
+  },
+
+  "thisWeek": {
+    "priorities": [
+      "RMF — set up and announce",
+      "MB Scholarship — deadline Sunday",
+      "Vacuum cleaner — order (8K/3mo EMI)"
+    ],
+    "nextWeek": [
+      "Income system — build infrastructure",
+      "Dating system — Saurabh-centered, portable",
+      "Seth conversation — stipend/working arrangement"
+    ]
+  },
+
+  "stressors": [
+    {
+      "name": "Cleaning",
+      "note": "Recurring. Vacuum cleaner will help."
+    },
+    {
+      "name": "Purple — RMF + Seth",
+      "note": "Setting up RMF. Discuss stipend/finances."
+    },
+    {
+      "name": "Dating — no process",
+      "note": "Need Saurabh-centered system. Abundance in early stage."
+    }
+  ],
+
+  "health": {
+    "physical": {
+      "gym": {
+        "status": "good",
+        "current": "Working well. Saturday + Tuesday (showed up, didn't work out). Today = last Phase 1 workout, then shift to Phase 2. Gloves sorted. Gym bag setup is micro-optimization.",
+        "lastWeek": "MAPS Anabolic Phase 1. Considering 3x/week instead of 2x. Going decent."
+      },
+      "hair": {
+        "status": "neutral",
+        "current": "Reached out to Amruta, session in next 1-2 weeks. Using Minoxidil with more intention, seeing some effects. Less stressed now.",
+        "lastWeek": "—"
+      },
+      "food": {
+        "status": "good",
+        "current": "Working well. Chila process in sync. Yogurt, blueberries, smoothies. Following the diet. Water 2-3L/day. Air fryer arrived — unopened, will try this weekend, it's an add-on not a fix. Only gap was lunch → ordered Anastasia lunchbox + bag, will pack and eat in Panjim.",
+        "lastWeek": "Need kitchen infrastructure (air fryer, instant pot, nutribullet). Goal: 75kg. Can't eat outside due to salt/sugar restrictions. Fighting Swiggy daily. Need systems, assets, strategy."
+      },
+      "water": {
+        "status": "good",
+        "current": "On track. 2-3L/day.",
+        "lastWeek": "Needs tracking."
+      },
+      "doctors": {
+        "status": "good",
+        "current": "Tests done, results good. HbA1c 5.8 (borderline). Kidneys improving — eGFR 60→77 (want >90). LDL 74 (want <70). Dr. Dalvi: keeping same meds, reframed medicines as support until body can carry itself. Manish reviewing, may add supplements, call coming soon.",
+        "lastWeek": "Blood tests overdue. Dr. Dalvi appointment needed. Meds change. Anxiety re: kidney. Dentist. Manish call re: supplements. Need to figure out timeline."
+      },
+      "swimming": {
+        "status": "neutral",
+        "current": "Messaged Aru — she's out of town, will connect in a few days. Challenge: morning timing affecting food/work, need a system. Not a priority for December. Might start with art therapy sessions first. Guilt of not reaching out is gone.",
+        "lastWeek": "On pause. Need to message Aru. Good for mood/health but unsure about bandwidth."
+      },
+      "physiotherapy": {
+        "status": "neutral",
+        "current": "Reached out to clinic. Will schedule. Not urgent — next 2-3 weeks.",
+        "lastWeek": "—"
+      },
+      "massage": {
+        "status": "neutral",
+        "current": "Holding off given spending this week. Need to figure out system: how much, where, how frequent. Remove decision-making. Quarterly? Six months?",
+        "lastWeek": "—"
+      }
+    },
+    "emotional": {
+      "therapy": {
+        "status": "neutral",
+        "current": "Session Tuesday (in-person?). Next session Friday. Print this artifact to take. Topics causing anxiety: Purple, Aditi, Birthday/Serendipity.",
+        "lastWeek": "Weekly with Mariah. Tremendously helpful. Helps with regulation."
+      },
+      "morningSunlight": {
+        "status": "neutral",
+        "current": "3-4 days/week. Can be more intentional. Also doing good morning/good night messages to 3-4 people — helpful. Want to find someone for 5-10 min morning calls (Vinay/brother?).",
+        "lastWeek": "Need to make space. 15 min? Maybe stretch in balcony or MAPS Prime. Not happening yet."
+      },
+      "sunset": {
+        "status": "neutral",
+        "current": "Can take more seriously. Skipped yesterday and day before. Design day around it, not optional.",
+        "lastWeek": "Very helpful. 30-60 min in Panjim regulates mood. Friction: commute becoming tedious."
+      },
+      "ifs": {
+        "status": "neutral",
+        "current": "Want to be more intentional. Keep here for now.",
+        "lastWeek": "Helped a lot in recent months. Audiobooks happening. Practices need dedicated time. Days feel full, no container."
+      },
+      "marthaBeck": {
+        "status": "neutral",
+        "current": "Listening to Way of Integrity audiobook. Want to be more intentional.",
+        "lastWeek": "Anxiety whispering (sigh, lose focus, accept, move, KIST, chant). Want to do 1-3x daily. No container yet."
+      },
+      "socialConnection": {
+        "status": "neutral",
+        "current": "Improv with Aditi Saturday. Met Karan (work, but he comes over). Grazing table Dec 25 — will register.",
+        "lastWeek": "Short daily call (10-15 min) would help. Not being alone with own head. Potential: Ishita, Parul, Karan, Dhaarna, Aditi, Vinay."
+      }
+    }
+  },
+
+  "work": {
+    "purple": {
+      "status": "stressor",
+      "current": "Call with Seth Dec 5. December closing call set for 18th. Asked about January 5th call. Front-end: Dec call, Jan call, RMF. Back-end work: next week. STRESS: (1) Setting up RMF. (2) Need to discuss stipend/finances/working arrangement with Seth.",
+      "lastWeek": "Anxious about messaging Seth. Wanted to get to GREEN first. Five sprints done this year. Asking 'do we need another sprint? rushing it?' Landed on: one call with Seth to celebrate 2025 and share 2026."
+    },
+    "income": {
+      "status": "neutral",
+      "current": "Need a system — like gym. Not willpower, infrastructure. Three opportunities in pipeline: (1) Karan — marketing for furnishing store, Tue meeting went well. (2) Bangalore startup training — unclear if open. (3) Mark Grimes — US founders thing. Next week: build system.",
+      "lastWeek": "Sprint mode energy but nothing concrete. Migal proposal pending. Asking: 'If I can earn $100K/year, why am I not going full throttle? I can see my body changing with gym. Why not money?'"
+    },
+    "blog": {
+      "status": "neutral",
+      "current": "Going well. Want to set up pipeline system with Claude. Not urgent — next week onwards.",
+      "lastWeek": "Daily practice. On track."
+    },
+    "mbScholarship": {
+      "status": "attention",
+      "current": "Urgent. Deadline Sunday. Will do after RMF announcement.",
+      "lastWeek": "—"
+    },
+    "bookTeaching": {
+      "status": "neutral",
+      "current": "Needs system. Approach: Claude project, teach Claude things, build as artifact. Next week onwards.",
+      "lastWeek": "Question mark. 'Start doing more? How? What?' Parked until clarity on Purple and income."
+    }
+  },
+
+  "social": {
+    "dating": {
+      "status": "attention",
+      "current": "STRESS: No process. Need a system — abundance in early stage, not one person at a time (too heavy). Same pattern as income. Want a Saurabh-centered process that works anywhere — not location-dependent. Aditi: in early stage, seeing if it moves forward.",
+      "lastWeek": "Told Aditi you like her (that Sunday). She took it well but uncertain thing with another guy. Not sure what to do next. 'Women check me out at Starbucks — do I say hi?'"
+    },
+    "friends": {
+      "status": "neutral",
+      "current": "Being cautious. Other people's energy affects decision-making. Want to be more centered first, then meet people from groundedness not need. Birthday: invited Karan, Dhaarna, Sonali, maybe Aditi. Not everyone — clarity on who I actually want.",
+      "lastWeek": "Threads open: Karan, Shobhna, Dhaarna, Ridima, Abhijeet. Goa social. Family/friends."
+    },
+    "hobbies": {
+      "status": "neutral",
+      "current": "Movies at home (can skip, can close — less commitment than theater). Improv — looking forward to next one. Audiobooks — not quite hobby, more like learning/way of being. What fills free time.",
+      "lastWeek": "Ragini dance classes — unclear if continuing. Music (old Hindi songs), movies help. Dance helps but bandwidth uncertain."
+    },
+    "mindset": {
+      "status": "neutral",
+      "current": "Self-sufficiency first, then connection. Integrity. Coming from wholeness, not from need.",
+      "lastWeek": "—"
+    }
+  },
+
+  "chores": {
+    "purchases": {
+      "clothes": {
+        "current": "Hygiene items (boxers, socks, towels) — create abundance. A couple of good shirts — see if can afford now or wait till next month.",
+        "lastWeek": "—"
+      },
+      "kitchen": {
+        "status": "attention",
+        "current": "Vacuum cleaner — PRIORITY. Returned Instant Pot (no space). Ordered food chopper. Holding on Nutribullet. Need more spoons — minor.",
+        "lastWeek": "Air fryer, nutribullet, instant pot needed. Building infrastructure to avoid Swiggy."
+      }
+    },
+    "shifting": {
+      "current": "Would reduce 2hr daily commute. But air pollution these 2 months. Not urgent — 2-3 weeks out.",
+      "lastWeek": "Need to move. Find a place. No reason to live in Parra — no friends, no nature."
+    },
+    "recurring": {
+      "scooter": {
+        "current": "Service done. Cleaning — set up weekly appointment at cleaning center.",
+        "lastWeek": "Scooter service/cleaning needed."
+      },
+      "cleaning": {
+        "current": "Main stress. Vacuum cleaner will help. Need a system once equipment is in.",
+        "lastWeek": "—"
+      }
+    }
+  },
+
+  "upcoming": {
+    "birthday": {
+      "date": "2025-12-18",
+      "current": "Insight today: live as if it's already done. Not an anxious week of anticipation. Low-key, 1:1s with Karan, Dhaarna, Sonali (maybe Aditi). Purple call 9:30pm. Things for myself: massage, nice clothes, swim.",
+      "lastWeek": "Coming up. Design thinking needed."
+    },
+    "serendipity": {
+      "dates": "2025-12-12 to 2025-12-21",
+      "current": "4 events booked including Akshiti on 15th. Dec 17th Shaan — Dhaarna/Sonali going, can't get tickets. Questioning: is chasing this a priority, or birthday-anxiety-driven one-time change that doesn't help long-run?",
+      "lastWeek": "—"
+    },
+    "christmas": {
+      "date": "2025-12-25",
+      "current": "Grazing table — will register.",
+      "lastWeek": "—"
+    },
+    "newYear": {
+      "date": "2025-12-31",
+      "current": "—",
+      "lastWeek": "—"
+    },
+    "closing2025": {
+      "current": "Marie Kondo approach. Examining commitments and identities. Recurring, not urgent.",
+      "lastWeek": "Marie Kondo approach — examining commitments and identities. Purge process."
+    }
+  },
+
+  "finances": {
+    "stock": [
+      {
+        "date": "2025-12-10",
+        "netWorth": 69891,
+        "totalCash": 98148,
+        "creditCard": -63718,
+        "savings": 35461
+      },
+      {
+        "date": "2025-12-05",
+        "netWorth": 98437,
+        "totalCash": 114018,
+        "creditCard": -51875,
+        "savings": 36293
+      },
+      {
+        "date": "2025-11-28",
+        "netWorth": 188086,
+        "totalCash": 239731,
+        "creditCard": -88978,
+        "savings": 37333
+      }
+    ],
+    "flow": {
+      "income": "₹175K (Purple stipend). Next: early Jan.",
+      "fixedExpenses": "EMI: ₹40K. Rent: ₹24K. Subscriptions."
+    },
+    "purchasesNext": [
+      "Vacuum cleaner (8K/3mo)",
+      "Basic clothes (2-3K)",
+      "Shirts/pants (5K)",
+      "Groceries (ongoing)"
+    ],
+    "purchasesHolding": [
+      "Wardrobe (30-50K)",
+      "Specs branded (5-15K)",
+      "Shifting/furniture/bed",
+      "Contact lenses (3K)",
+      "Nutribullet (8-12K)",
+      "Instant pot (12K)"
+    ],
+    "bigChanges": [
+      "Headphones Marshall (30K)",
+      "TV/projector (60-100K)",
+      "iPhone 17 (80-120K)",
+      "Travel — Amsterdam, NYC, NZ (500-800K)",
+      "Car — MG ZS Electric (1500-2500K)",
+      "Premium apartment (50-100K rent or buy)"
+    ]
+  },
+
+  "reviewHistory": [
+    {
+      "date": "2025-12-11",
+      "health": 7,
+      "work": 6,
+      "social": 5,
+      "chores": 5,
+      "notes": "Systems working. RMF stress."
+    },
+    {
+      "date": "2025-11-28",
+      "health": 5,
+      "work": 5,
+      "social": 4,
+      "chores": 4,
+      "notes": "Running on fumes."
+    }
+  ]
+}
