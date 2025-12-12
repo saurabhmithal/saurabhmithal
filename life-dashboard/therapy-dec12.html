@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Therapy Session — Dec 12, 2025</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Georgia, serif;
+            font-size: 14px;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+        .subtitle { color: #666; font-size: 12px; margin-bottom: 20px; }
+
+        .page {
+            page-break-after: always;
+            min-height: 270mm;
+            padding-bottom: 20px;
+        }
+        .page:last-child { page-break-after: avoid; }
+
+        /* PAGE 1: Two Columns */
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .column h2 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid;
+        }
+        .column.difficult h2 {
+            color: #991b1b;
+            border-color: #991b1b;
+        }
+        .column.good h2 {
+            color: #065f46;
+            border-color: #065f46;
+        }
+
+        .item {
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 3px solid;
+        }
+        .item .score {
+            font-size: 18px;
+            font-weight: 700;
+            float: right;
+            margin-left: 10px;
+        }
+        .item .event {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .item .detail {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Difficult items - red gradient */
+        .item.severe { background: #fef2f2; border-color: #991b1b; }
+        .item.severe .score { color: #991b1b; }
+        .item.moderate { background: #fef7f2; border-color: #c2410c; }
+        .item.moderate .score { color: #c2410c; }
+        .item.mild { background: #fffbeb; border-color: #b45309; }
+        .item.mild .score { color: #b45309; }
+
+        /* Good items - green gradient */
+        .item.great { background: #ecfdf5; border-color: #065f46; }
+        .item.great .score { color: #065f46; }
+        .item.good { background: #f0fdf4; border-color: #16a34a; }
+        .item.good .score { color: #16a34a; }
+        .item.okay { background: #f7fee7; border-color: #65a30d; }
+        .item.okay .score { color: #65a30d; }
+
+        /* PAGE 2: Timeline */
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .graph-container {
+            position: relative;
+            height: 200px;
+            margin: 20px 0 40px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .graph-area {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .zero-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            border-top: 1px dashed #999;
+        }
+        .zero-label {
+            position: absolute;
+            top: 50%;
+            left: -20px;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: #999;
+        }
+        .top-label {
+            position: absolute;
+            top: 5px;
+            left: -25px;
+            font-size: 10px;
+            color: #065f46;
+        }
+        .bottom-label {
+            position: absolute;
+            bottom: 5px;
+            left: -25px;
+            font-size: 10px;
+            color: #991b1b;
+        }
+
+        svg.graph {
+            width: 100%;
+            height: 100%;
+        }
+
+        .timeline-list {
+            margin-top: 20px;
+        }
+        .day {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        .day:last-child { border-bottom: none; }
+        .day-header {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .day-date {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .day-label {
+            font-size: 12px;
+            color: #666;
+        }
+        .event-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin: 4px 0 4px 20px;
+            font-size: 13px;
+        }
+        .event-score {
+            font-weight: 700;
+            min-width: 28px;
+            text-align: center;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        .event-score.negative { background: #fee2e2; color: #991b1b; }
+        .event-score.positive { background: #d1fae5; color: #065f46; }
+        .event-score.neutral { background: #f3f4f6; color: #666; }
+
+        /* Topics section */
+        .topics {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+        .topics h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .topics ul {
+            margin-left: 20px;
+        }
+        .topics li {
+            margin-bottom: 6px;
+        }
+
+        @media print {
+            body { padding: 10px; }
+            .page { min-height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: Two Columns -->
+<div class="page">
+    <h1>Therapy Check-in — Dec 12, 2025</h1>
+    <p class="subtitle">Last session: Dec 2 · Covering 10 days</p>
+
+    <div class="columns">
+        <div class="column difficult">
+            <h2>↓ Most Difficult</h2>
+
+            <div class="item severe">
+                <span class="score">-8</span>
+                <div class="event">Said "yes" to Oshana</div>
+                <div class="detail">Body went limp. Out of integrity. Wanted junk food.</div>
+            </div>
+
+            <div class="item severe">
+                <span class="score">-6</span>
+                <div class="event">Oshana texted to meet</div>
+                <div class="detail">Sinking feeling immediately</div>
+            </div>
+
+            <div class="item moderate">
+                <span class="score">-5</span>
+                <div class="event">Before Seth call</div>
+                <div class="detail">Anxiety all day Friday</div>
+            </div>
+
+            <div class="item moderate">
+                <span class="score">-3</span>
+                <div class="event">During Seth call</div>
+                <div class="detail">Better than expected, but still heavy</div>
+            </div>
+
+            <div class="item mild">
+                <span class="score">-2</span>
+                <div class="event">Purple work at Starbucks</div>
+                <div class="detail">Heavy, dragging. First time in 2 years questioning "why am I doing this?"</div>
+            </div>
+
+            <div class="item mild">
+                <span class="score">-1</span>
+                <div class="event">Aditi/Standup evening</div>
+                <div class="detail">Started good (+4), then triggering standup, alcohol environment, anxiety</div>
+            </div>
+        </div>
+
+        <div class="column good">
+            <h2>↑ Most Good</h2>
+
+            <div class="item great">
+                <span class="score">+6</span>
+                <div class="event">Blood test results</div>
+                <div class="detail">Everything improving. Called 3-4 people to share. Real win.</div>
+            </div>
+
+            <div class="item great">
+                <span class="score">+5</span>
+                <div class="event">Aditi texted to meet</div>
+                <div class="detail">Light, happy. She reached out.</div>
+            </div>
+
+            <div class="item good">
+                <span class="score">+4</span>
+                <div class="event">Gym sessions (Sat, Thu)</div>
+                <div class="detail">Showed up. Phase 1 ending, Phase 2 starting.</div>
+            </div>
+
+            <div class="item good">
+                <span class="score">+4</span>
+                <div class="event">SOTU review + RMF work</div>
+                <div class="detail">Thursday was productive. Got things done.</div>
+            </div>
+
+            <div class="item okay">
+                <span class="score">+3</span>
+                <div class="event">Dr. Dalvi appointment</div>
+                <div class="detail">Good news confirmed. Continuing meds as support.</div>
+            </div>
+
+            <div class="item okay">
+                <span class="score">+3</span>
+                <div class="event">Listened to body at gym</div>
+                <div class="detail">Tuesday: couldn't work out, came back. Growth, not failure.</div>
+            </div>
+
+            <div class="item okay">
+                <span class="score">+2</span>
+                <div class="event">Oshana clarified</div>
+                <div class="detail">"No other reason to meet" — relief, lighter</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="topics">
+        <h3>Topics for Today</h3>
+        <ul>
+            <li><strong>Oshana</strong> — why did my body react so strongly? (-6 to -8)</li>
+            <li><strong>Purple/Seth</strong> — first time questioning it in 2 years. What's underneath?</li>
+            <li><strong>Aditi</strong> — what got triggered at standup? Where are we now?</li>
+            <li><strong>Birthday/Serendipity</strong> — the "already over" reframe helped. What's the deeper fear?</li>
+            <li><strong>Anxious attachment</strong> — how is it showing up?</li>
+        </ul>
+    </div>
+</div>
+
+<!-- PAGE 2: Timeline -->
+<div class="page">
+    <div class="timeline-header">
+        <h1>Emotional Timeline — Dec 4-12</h1>
+        <p class="subtitle">Highs and lows over 10 days</p>
+    </div>
+
+    <div class="graph-container">
+        <span class="top-label">+10</span>
+        <span class="zero-label">0</span>
+        <span class="bottom-label">-10</span>
+        <div class="zero-line"></div>
+        <svg class="graph" viewBox="0 0 800 200" preserveAspectRatio="none">
+            <!-- Grid lines -->
+            <line x1="0" y1="50" x2="800" y2="50" stroke="#e5e7eb" stroke-width="1"/>
+            <line x1="0" y1="150" x2="800" y2="150" stroke="#e5e7eb" stroke-width="1"/>
+
+            <!-- The emotional journey line -->
+            <!-- Scale: y=100 is 0, y=0 is +10, y=200 is -10 -->
+            <!-- x positions: Wed=50, Thu=150, Fri=250, Sat=350, Sun=450, Mon=550, Tue=650, Wed2=700, Thu2=750 -->
+
+            <polyline
+                fill="none"
+                stroke="#6366f1"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                points="
+                    50,160
+                    100,180
+                    130,120
+                    200,150
+                    250,130
+                    320,50
+                    350,60
+                    380,110
+                    450,90
+                    500,40
+                    550,125
+                    600,80
+                    650,70
+                    680,95
+                    720,90
+                    780,60
+                "
+            />
+
+            <!-- Data points -->
+            <circle cx="50" cy="160" r="5" fill="#991b1b"/> <!-- Wed: Oshana text -6 -->
+            <circle cx="100" cy="180" r="5" fill="#991b1b"/> <!-- Thu: Said yes -8 -->
+            <circle cx="130" cy="120" r="5" fill="#065f46"/> <!-- Thu: Clarified +2 -->
+            <circle cx="200" cy="150" r="5" fill="#991b1b"/> <!-- Fri: Before Seth -5 -->
+            <circle cx="250" cy="130" r="5" fill="#991b1b"/> <!-- Fri: During Seth -3 -->
+            <circle cx="320" cy="50" r="5" fill="#065f46"/> <!-- Sat: Aditi text +5 -->
+            <circle cx="350" cy="60" r="5" fill="#065f46"/> <!-- Sat: Gym +4 -->
+            <circle cx="380" cy="110" r="5" fill="#b45309"/> <!-- Sat: Evening -1 -->
+            <circle cx="450" cy="90" r="5" fill="#6b7280"/> <!-- Sun: Chores +1 -->
+            <circle cx="500" cy="40" r="5" fill="#065f46"/> <!-- Mon: Blood tests +6 -->
+            <circle cx="550" cy="125" r="5" fill="#991b1b"/> <!-- Mon: Purple heavy -2 -->
+            <circle cx="600" cy="80" r="5" fill="#065f46"/> <!-- Tue: Body listen +3 -->
+            <circle cx="650" cy="70" r="5" fill="#065f46"/> <!-- Tue: Dr Dalvi +3 -->
+            <circle cx="680" cy="95" r="5" fill="#6b7280"/> <!-- Wed: Tired +1 -->
+            <circle cx="720" cy="90" r="5" fill="#6b7280"/> <!-- Wed: Dec call +1 -->
+            <circle cx="780" cy="60" r="5" fill="#065f46"/> <!-- Thu: Productive +4 -->
+
+            <!-- Day labels -->
+            <text x="75" y="195" font-size="11" fill="#666" text-anchor="middle">Wed-Thu</text>
+            <text x="225" y="195" font-size="11" fill="#666" text-anchor="middle">Fri</text>
+            <text x="350" y="195" font-size="11" fill="#666" text-anchor="middle">Sat</text>
+            <text x="450" y="195" font-size="11" fill="#666" text-anchor="middle">Sun</text>
+            <text x="525" y="195" font-size="11" fill="#666" text-anchor="middle">Mon</text>
+            <text x="625" y="195" font-size="11" fill="#666" text-anchor="middle">Tue</text>
+            <text x="700" y="195" font-size="11" fill="#666" text-anchor="middle">Wed</text>
+            <text x="780" y="195" font-size="11" fill="#666" text-anchor="middle">Thu</text>
+        </svg>
+    </div>
+
+    <div class="timeline-list">
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Wed Dec 4</span>
+                <span class="day-label">Oshana</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score negative">-6</span>
+                <span>Oshana texted asking to meet Sunday → sinking feeling</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Thu Dec 5</span>
+                <span class="day-label">Oshana resolution</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score negative">-8</span>
+                <span>Replied "yes but not heavy" → body limp, out of integrity</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score positive">+2</span>
+                <span>Oshana clarified "no other reason" → relief, lighter</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Fri Dec 6</span>
+                <span class="day-label">Seth call</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score negative">-5</span>
+                <span>Before call: anxiety all day</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score negative">-3</span>
+                <span>During call: heavy but okay (better on recording later)</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Sat Dec 7</span>
+                <span class="day-label">Aditi + Gym</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score positive">+5</span>
+                <span>Aditi texted asking to meet → light, happy</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score positive">+4</span>
+                <span>Gym 4-6pm → good session</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score negative">-1</span>
+                <span>Evening: improv good, then standup triggering, anxiety</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Sun Dec 8</span>
+                <span class="day-label">Chores</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score neutral">+1</span>
+                <span>Blood tests, meds, specs, GMAT session. Productive but tired.</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Mon Dec 9</span>
+                <span class="day-label">Blood results + Purple doubt</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score positive">+6</span>
+                <span>Blood test results great → called 3-4 people to share</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score negative">-2</span>
+                <span>Purple work at Starbucks → heavy, first time questioning in 2 years</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Tue Dec 10</span>
+                <span class="day-label">Mixed</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score positive">+3</span>
+                <span>Gym: couldn't work out, listened to body, came back → growth</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score positive">+3</span>
+                <span>Dr. Dalvi: good news confirmed, continuing meds</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Wed Dec 11</span>
+                <span class="day-label">Low energy</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score neutral">+1</span>
+                <span>Home, tired. Got December Purple call done. That was it.</span>
+            </div>
+        </div>
+
+        <div class="day">
+            <div class="day-header">
+                <span class="day-date">Thu Dec 12</span>
+                <span class="day-label">Productive</span>
+            </div>
+            <div class="event-row">
+                <span class="event-score positive">+4</span>
+                <span>SOTU review → helped. RMF work. Gym. MB draft with Claude.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="topics" style="margin-top: 20px;">
+        <h3>Pattern I Notice</h3>
+        <ul>
+            <li><strong>Body knows first</strong> — limp, junk cravings, heaviness are signals</li>
+            <li><strong>Anticipation > reality</strong> — Seth call, birthday, Oshana: dread was worse than the thing</li>
+            <li><strong>Recovery is quick</strong> — you bounce from -8 to +2 when clarity comes</li>
+            <li><strong>Wins are landing</strong> — blood tests, gym, RMF. Are you letting them in?</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
